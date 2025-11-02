@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zagor-1.github.io/testanyproject/sitemap.xml

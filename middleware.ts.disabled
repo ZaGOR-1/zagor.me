@@ -1,0 +1,45 @@
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { locales, defaultLocale } from '@/lib/i18n';
+
+export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // Ignore static files and API routes
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/static') ||
+    pathname.includes('/favicon') ||
+    pathname.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js|json|xml|txt)$/i)
+  ) {
+    return NextResponse.next();
+  }
+
+  // Check if the pathname starts with a locale
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  if (pathnameHasLocale) {
+    return NextResponse.next();
+  }
+
+  // Redirect to default locale if no locale is present
+  const url = request.nextUrl.clone();
+  url.pathname = `/${defaultLocale}${pathname}`;
+  return NextResponse.redirect(url);
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon (favicon files)
+     * - public folder files
+     */
+    '/((?!_next/static|_next/image|favicon|.*\\..*|api).*)',
+  ],
+};
