@@ -1,0 +1,4 @@
+This is a placeholder. To generate a proper favicon.ico, convert the SVG files using:
+- ImageMagick: convert favicon-light.svg -resize 32x32 favicon.ico
+- Online tools: https://realfavicongenerator.net/
+- Or use the SVG favicons directly (modern browsers support them)
